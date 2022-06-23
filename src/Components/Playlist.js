@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import defaultImg from '../Images/default-playlist.png';
 import axios from 'axios';
 
-export default function Playlist({ playlist }) {
+export default function Playlist({ playlist, setCurrentTrackList }) {
     const [trackList, setTrackList] = useState();
     const [previousURL, setPreviousURL] = useState();
 
@@ -30,13 +30,18 @@ export default function Playlist({ playlist }) {
 
     return (
         <div style={{
-            overflowY: 'visible',
+            overflowY: 'scroll',
             padding: '90px',
             maxHeight: '80vh',
             width: '90vw'
         }}>
             <img src={imgUrl} style={{ maxWidth: '60vw', borderRadius: '10px' }} alt="playlist header" />
-            <h1 style={{ color: '#fff' }}>{playlistName}</h1>
+            <div style={{
+                display: 'flex', flexFlow: 'row nowrap', alignItems: 'center', justifyContent: 'space-between', maxWidth: '76vw', margin: '0 auto'
+            }}>
+                <h1 style={{ color: '#fff' }}>{playlistName}</h1>
+                <button className="btn btn-icon" onClick={() => setCurrentTrackList(trackList)}><ion-icon name="play"/></button>
+            </div>
             {trackList && trackList.map(track => {
                 return (
                     <div style={{
@@ -45,7 +50,7 @@ export default function Playlist({ playlist }) {
                         alignItems: 'center',
                         justifyContent: 'flex-start',
                         margin: '10px 0'
-                    }}>
+                    }} key={track.track.id}>
                         <img src={track.track.album.images[0].url} alt='album' style={{ width: '48px', borderRadius: '4px', marginRight: '20px' }} />
                         <div style={{
                             display: 'flex',

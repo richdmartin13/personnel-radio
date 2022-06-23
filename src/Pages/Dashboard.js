@@ -15,6 +15,7 @@ export default function Dashboard() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedPlaylist, setSelectedPlaylist] = useState(0);
     const [playlists, setPlaylists] = useState([{ name: '', href: '#', images: [], tracks: { href: '#'}}]);
+    const [trackList, setTrackList] = useState();
     const focusRef = useRef(HTMLButtonElement);
 
     const tabs = [
@@ -23,7 +24,7 @@ export default function Dashboard() {
             icon: 'disc',
             pageID: 'next',
             index: 0,
-            sheetComponent: <Next/>,
+            sheetComponent: <Next trackList={trackList}/>,
             pageComponent: <Player/>
         },
         {
@@ -40,7 +41,7 @@ export default function Dashboard() {
             pageID: 'playlists',
             index: 2,
             sheetComponent: <Playlists selectPlaylist={setSelectedPlaylist} reportPlaylists={setPlaylists}/>,
-            pageComponent: <Playlist playlist={playlists[selectedPlaylist]}/>
+            pageComponent: <Playlist playlist={playlists[selectedPlaylist]} setCurrentTrackList={setTrackList}/>
         }
     ];
 
@@ -81,6 +82,9 @@ export default function Dashboard() {
                         <Tabs setPage={setActiveTab} options={tabs}/>
                     </div>
                 }
+                style={{
+                    maxWidth: '400px'
+                }}
                 snapPoints={({ maxHeight }) => [maxHeight / 9, maxHeight / 3, maxHeight * 0.9 ]}>
                     <div className="sheet-container">
                         {renderSheet()}
